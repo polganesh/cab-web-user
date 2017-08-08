@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Home</title>
+<!-- enable touch zooming and ensure proper rendering on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	href="/css/bootstrap/bootstrap.min.css">
+<!-- Optional Bootstrap theme -->
+<script src="/js/angular/angular.min.js"></script>
+
+<script src="/js/angular/angular-route.min.js"></script>
+<script src="/js/app/bookingrouting.js?version=4"></script>
+<script src="/js/app/user/booking.js?version=2"></script>
+<script src="/js/app/user/historyandcancelcab.js?version=4"></script>
+<script src="/js/app/login.js?version=1"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/js/bootstrap/bootstrap.min.js"></script>
+</head>
+<body ng-app="bookingApp">
+	<nav class="navbar navbar-default" ng-show="currentUser" >
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Cab Booking</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="#bookcab">Book Cab</a></li>
+				<li><a href="#historyandcancelcab">Cancal Cab And History</a></li>
+				<li ng-show="currentUser.roleid==2"><a href="#">Upload Cab Details</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#">Logout</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div ng-view></div>
+</body>
+</html>

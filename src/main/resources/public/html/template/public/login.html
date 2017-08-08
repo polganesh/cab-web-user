@@ -1,0 +1,31 @@
+<div ng-controller="loginController">
+	<div class="container">
+		<form class="form-inline" role="form">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Please Signin</div>
+				<div class="panel-body">
+					<div class="alert alert-danger" ng-show="errMessage">{{errMessage}}</div>
+					<div class="form-group">
+						<label for="userName">UserName:</label> <input type="text"
+							class="form-control" id="userName"
+							ng-model="user.username" required="required">
+					</div>
+					
+					<div class="form-group">
+						<label for="password">Password:</label> <input type="password"
+							class="form-control" id="password"
+							ng-model="user.password" required="required">
+					</div>
+				</div>
+				<div class="panel-footer">
+					<button type="submit" class="btn btn-default"
+						ng-click="authenticate()">Signin</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+

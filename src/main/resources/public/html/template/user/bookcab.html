@@ -1,0 +1,89 @@
+<div ng-controller="bookingController" ng-init="loadBookingConfig()">
+	<div class="container">
+		<form class="form-inline" role="form">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Book Cab</div>
+				<div class="panel-body">
+					<div class="alert alert-danger" ng-show="errMessage">{{errMessage}}</div>
+					<div class="form-group">
+						<label for="fromLocation">Pickup:</label>
+						<div class="radio">
+							<label><input type="radio" name="fromLocation"
+								ng-model="bookCabFormModel.pickup" ng-value="1" required="required">Airoli</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="fromLocation"
+								ng-model="bookCabFormModel.pickup" ng-value="2" required="required">Teritex</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="datefor">Date:</label> <input type="date"
+							class="form-control" id="datefor" placeholder="Date"
+							ng-model="bookCabFormModel.pickupDate" required="required">
+					</div>
+					<div class="form-group">
+						<label for="hourfor">Hour:</label> <input type="number"
+							class="form-control" id="hourfor"
+							ng-model="bookCabFormModel.pickupHour" required="required" min=0
+							max=23 value=18>
+					</div>
+					<!-- 
+					<div class="form-group">
+						<label for="minutesfor">Minutes:</label> <input type="number"
+							class="form-control" id="minutefor"
+							ng-model="bookCabFormModel.pickupMinute" required="required"
+							min=0 max=59 step=15 value=30>
+					</div>
+					-->
+				</div>
+				<div class="panel-footer">
+					<button type="submit" class="btn btn-default"
+						ng-click="checkAvailableCabs()">Check Available Cab</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="container">
+		<div class="panel panel-primary" ng-show="timeComp">
+			<div class="panel-heading">Click on slot to confirm</div>
+			<div class="panel-body">
+				<div class="alert alert-danger" ng-show="bookingErrorMessage">{{bookingErrorMessage}}</div>
+				<div class="alert alert-success" ng-show="bookingMessage">{{bookingMessage}}</div>
+				<!-- 
+				<div class="well well-sm" ng-show="message">
+					<strong>{{message}}</strong>
+				</div>
+				-->
+				<!-- 
+				<div class="container">
+					<div class="row">
+						<div ng-style="Available" class="col-sm-4">Available</div>
+						<div ng-style="PartiallyAvaiable" class="col-sm-4">PartiallyAvaiable</div>
+						<div ng-style="Full" class="col-sm-4">Full</div>
+					</div>
+				</div>
+				-->
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-1"
+							ng-style={{timeAvaliableCabModel[timepart].cabAvailability}}
+							ng-repeat="timepart in timeComp"
+							ng-click="provideConfirmation(timeAvaliableCabModel[timepart].locationcabcapacityid,timepart,timeAvaliableCabModel[timepart].dateforbooking)"
+							data-toggle="tooltip" data-placement="top"
+							title="{{timeAvaliableCabModel[timepart].cabAvailability}}">{{timepart}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+				<span ng-style="Available">Available</span>&nbsp;
+				<span ng-style="PartiallyAvaiable">PartiallyAvaiable</span>&nbsp;		
+				<span ng-style=Full>Full</span>&nbsp;
+			</div>
+		</div>
+	</div>	
+</div>
+
+
+
+
