@@ -3,7 +3,12 @@
  */
 package com.gp.common.web.security.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -18,12 +23,17 @@ import com.gp.common.web.security.model.UserModel;
 @Service
 public class UserAuthenticationService extends SecureRestService implements IUserAuthenticationService {
 
+	private static final String USER_SECURITY_MICRO_SERVICE_NAME="USERSECURITY";
+	private static final String BASE_PATH="/api/usersecurity";
+	private static final String FIND_BY_USERNAME_OPERATION="/userdetails/search/findByUsername";
 	/**
 	 * 
 	 */
 	public UserAuthenticationService() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	/*
 	 * (non-Javadoc)
@@ -33,12 +43,20 @@ public class UserAuthenticationService extends SecureRestService implements IUse
 	 */
 	@Override
 	public UserModel authenticateUser(String userName, String password) {
-		RestTemplate template = new RestTemplate();
-		String endPoint = "http://localhost:9090/api/usersecurity/userdetails/search/findByUsername?projection=user&username="
-				+ userName;
+		String serviceURL = super.getServiceDetails(USER_SECURITY_MICRO_SERVICE_NAME) + BASE_PATH
+				+ FIND_BY_USERNAME_OPERATION;
+		String queryString = "?projection=user&username=" + userName;
+		String endPointURL = serviceURL + queryString;
 		UserModel model = null;
+		RestTemplate restTemplate = new RestTemplate();
+		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setConnectTimeout(1000);
+		requestFactory.setReadTimeout(1000);
+		restTemplate.setRequestFactory(requestFactory);
 		try {
-			model = template.getForObject(endPoint, UserModel.class);
+			ResponseEntity<UserModel> responseEntity = restTemplate.exchange(endPointURL, HttpMethod.GET,
+					super.getUserHttpEntity(), UserModel.class);
+			model = responseEntity.getBody();
 			if (model != null) {
 				if (userName.equals(model.getUsername()) && password.equals(model.getPassword())
 						&& model.getIsdeleted() == 0) {
@@ -50,10 +68,12 @@ public class UserAuthenticationService extends SecureRestService implements IUse
 			}
 		} catch (HttpClientErrorException exception) {
 			HttpStatus status = exception.getStatusCode();
-			if (!status.is4xxClientError()) {
+			// indicates this is not valid username
+			if (status.value() == 404) {
+				return null;
+			}else {
 				throw exception;
 			}
-
 		}
 		return model;
 	}

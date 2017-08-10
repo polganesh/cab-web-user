@@ -1,5 +1,8 @@
 package com.gp.common.rest.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,19 @@ import org.springframework.web.client.RestTemplate;
  *
  */
 public class SimpleRESTService {
+	
+	@Autowired
+	private LoadBalancerClient client;
+	
+	/**
+	 * 
+	 * @param serviceName :- Unique Identifier for Application in Discovery Server
+	 * @return 
+	 */
+	protected String getServiceDetails(String serviceName){
+		ServiceInstance instance=client.choose(serviceName);
+		return instance.getUri().toString();
+	}
 
 	/**
 	 * Useful method for sending REST data for partially updating record. it
