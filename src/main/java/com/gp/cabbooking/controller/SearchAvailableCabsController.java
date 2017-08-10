@@ -29,10 +29,11 @@ public class SearchAvailableCabsController  {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@RequestMapping(value = "/showAvailableCabs", method = RequestMethod.GET)
+	@RequestMapping(value = "/showAvailableCabs.do", method = RequestMethod.GET, produces = {
+	"application/json" }, headers = "Accept=application/json")
 	public SearchCabResult checkAvailableCabs(@RequestBody SearchModel searchModel) {
 		// to do need to convert java.util dates to java.time.localdate
-		LocalDate currentDate = LocalDate.now();
+	//	LocalDate currentDate = LocalDate.now();
 //		LocalDate dateForSearch = searchModel.getPickupDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //		SearchCabResult cabresult = null;
 //		if (dateForSearch.isBefore(currentDate)) {
@@ -41,7 +42,7 @@ public class SearchAvailableCabsController  {
 //			cabresult = searchCabService.searchCabDetails(searchModel);
 //
 //		}
-		return null;
+		return searchCabService.searchCabDetails(searchModel);
 	}
 
 //	@RequestMapping(value = "/showAvailableCabs.do", method = RequestMethod.POST, produces = {

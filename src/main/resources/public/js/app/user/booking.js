@@ -4,6 +4,7 @@
 			.controller(
 					'bookingController',
 					function($scope, $http, $rootScope) {
+						alert("calling book");
 						var bookCabFormModel = {
 							pickup : "",
 							pickupDate : "",
@@ -26,6 +27,7 @@
 						$scope.message = "";
 						$scope.errMessage = "";
 						$scope.checkAvailableCabs = function() {
+							alert("called");
 							console.log("pickup "
 									+ $scope.bookCabFormModel.pickup + " date "
 									+ $scope.bookCabFormModel.pickupDate + " "
@@ -41,7 +43,8 @@
 							
 							$http({
 						        method : "GET",
-						        url : '/showAvailableCabs.json'+queryString
+						   //     url : '/showAvailableCabs.json'+queryString
+						        url : '/showAvailableCabs.do'+queryString
 						    }).then(function mySucces(response) {
 						        //$scope.myWelcome = response.data;
 						    	console.log("success data "+response.data+" status "+response.status+" headers "+response.headers+" config "+response.config);

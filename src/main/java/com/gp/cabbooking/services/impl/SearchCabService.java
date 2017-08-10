@@ -23,6 +23,7 @@ import com.gp.cabbooking.model.SimpleCabDetailsModel;
 import com.gp.cabbooking.model.SimpleCabDetailsModels;
 import com.gp.cabbooking.services.ISearchCabService;
 import com.gp.common.rest.service.SecureRestService;
+import com.gp.common.rest.service.SimpleRESTService;
 
 /**
  * Class provide implementations for methods defined in <code>ICabService</code>
@@ -31,7 +32,7 @@ import com.gp.common.rest.service.SecureRestService;
  *
  */
 @Service
-public class SearchCabService extends SecureRestService implements ISearchCabService {
+public class SearchCabService extends SimpleRESTService implements ISearchCabService {
 
 	private static final String SEARCH_CAB_END_POINT = "http://localhost:9000/api/searchcab/locationcabtimedetail/search";
 
@@ -54,12 +55,15 @@ public class SearchCabService extends SecureRestService implements ISearchCabSer
 	 */
 	@Override
 	public SearchCabResult searchCabDetails(SearchModel searchModel) {
-//		String queryString = "?fromDate=" + SIMPLE_DATE_FORMAT.format(searchModel.getPickupDate()) 
-//							+ "&locationId="+ searchModel.getPickup()
-//							+"&isdeleted="+0
-//							+"&hourforbooking="+searchModel.getPickupHour()+"&projection=searchCabProjection";
+		String queryString = "?fromDate=" + SIMPLE_DATE_FORMAT.format(searchModel.getPickDate()) 
+							+ "&locationId="+ searchModel.getPickup()
+							+"&isdeleted="+0
+							+"&hourforbooking="+searchModel.getPickupHour()+"&projection=searchCabProjection";
 		//String endPoint = SEARCH_CAB_END_POINT + GET_CAB_FOR_LOCATION_AFTER_TIME_SLOT + queryString;
-		String endPoint = SEARCH_CAB_END_POINT + GET_CAB_FOR_LOCATION_AFTER_TIME_SLOT + "";
+		
+		;
+		String endPoint = super.getServiceDetails("SEARCHCAB")+"/api/searchcab/locationcabtimedetail/search" + GET_CAB_FOR_LOCATION_AFTER_TIME_SLOT + "";
+		endPoint=endPoint+queryString;
 		SimpleCabDetailsModel[] simpleCabDetails=getSimpleCabDetailModels(endPoint);
 		return prepareAvailableCabResult(simpleCabDetails);
 	}
